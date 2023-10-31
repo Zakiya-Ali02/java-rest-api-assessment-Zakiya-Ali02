@@ -9,6 +9,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
 
+import com.App;
+
 import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
