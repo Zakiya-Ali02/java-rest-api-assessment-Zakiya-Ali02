@@ -1,0 +1,21 @@
+{
+    "activities": [
+      {
+        "name": "Cycling",
+        "creditPoints": 10
+      },
+      {
+        "name": "mentoring",
+        "creditPoints": 15
+      },
+      {
+        "name": "walking",
+        "creditPoints": 20
+      },
+      {
+        "name": "xxx",
+        "creditPoints": 8
+      }
+    ]
+  }
+  
