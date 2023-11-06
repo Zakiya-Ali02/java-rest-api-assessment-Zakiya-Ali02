@@ -4,6 +4,7 @@ public class User {
     private String name;
     private String office;
     private String activity;
+    private int creditPoints;
 
     // Constructors
     public User() {
@@ -13,6 +14,7 @@ public class User {
         this.name = name;
         this.office = office;
         this.activity = activity;
+        this.creditPoints = creditPoints;
     }
 
     // Getters and setters
@@ -38,5 +40,13 @@ public class User {
 
     public void setActivity(String activity) {
         this.activity = activity;
+    }
+    
+    public int getCreditPoints() {
+        return creditPoints;
+    }
+
+    public void setCreditPoints(int creditPoints) {
+        this.creditPoints = creditPoints;
     }
 }
