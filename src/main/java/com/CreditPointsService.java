@@ -29,7 +29,10 @@ public class CreditPointsService {
         Optional<Activity> activityOptional = findActivityByName(userActivity);
 
         if (activityOptional.isPresent()) {
-            return activityOptional.get().getCreditPoints();
+            int activityCreditPoints = activityOptional.get().getCreditPoints();
+
+            int additionalCreditPoints = 0;
+            return activityCreditPoints + additionalCreditPoints;
         } else {
 
             return 0;
@@ -45,6 +48,9 @@ public class CreditPointsService {
 
     // Method to save user input to JSON file
     public void saveUserInput(User user) throws IOException {
+        int calculatedCreditPoints = calculateCreditPoints(user);
+        user.setCreditPoints(calculatedCreditPoints);
+
         ObjectMapper objectMapper = new ObjectMapper();
         List<User> existingUsers = getUsersFromJsonFile();
         existingUsers.add(user);

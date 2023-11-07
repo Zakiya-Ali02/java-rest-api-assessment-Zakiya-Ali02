@@ -10,7 +10,7 @@ public class User {
     public User() {
     }
 
-    public User(String name, String office, String activity) {
+    public User(String name, String office, String activity,int creditPoints) {
         this.name = name;
         this.office = office;
         this.activity = activity;

@@ -25,7 +25,7 @@ public class CreditPointsController {
             List<User> users = creditPointsService.getAllUsers();
             return ResponseEntity.ok(users);
         } catch (IOException e) {
-            e.printStackTrace(); // Log the exception
+            e.printStackTrace(); 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -40,7 +40,7 @@ public class CreditPointsController {
         try {
             creditPointsService.saveUserInput(user);
         } catch (Exception e) {
-            // Handle exception (e.g., log the error, return an error response)
+          
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user input.");
         }
