@@ -5,6 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
+import java.io.IOException;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/creditpoints")
 public class CreditPointsController {
@@ -14,6 +17,17 @@ public class CreditPointsController {
     @Autowired
     public CreditPointsController(CreditPointsService creditPointsService) {
         this.creditPointsService = creditPointsService;
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        try {
+            List<User> users = creditPointsService.getAllUsers();
+            return ResponseEntity.ok(users);
+        } catch (IOException e) {
+            e.printStackTrace(); // Log the exception
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @PostMapping("/calculate")

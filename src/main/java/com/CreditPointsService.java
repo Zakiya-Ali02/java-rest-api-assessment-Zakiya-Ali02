@@ -76,4 +76,14 @@ public class CreditPointsService {
         return objectMapper.readValue(file, type);
     }
 
+    public List<User> getAllUsers() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        File file = new File("src/main/resources/users.json");
+        if (file.exists()) {
+            return objectMapper.readValue(file, objectMapper.getTypeFactory().constructCollectionType(List.class, User.class));
+        } else {
+            return List.of(); // Return an empty list if the file doesn't exist
+        }
+    }
+
 }
