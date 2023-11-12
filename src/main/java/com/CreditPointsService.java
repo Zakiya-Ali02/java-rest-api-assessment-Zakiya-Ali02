@@ -102,5 +102,18 @@ public class CreditPointsService {
     
         return userOptional.map(user -> user.getName() + " has " + user.getCreditPoints() + " points in total").orElse("User not found.");
     }
+
+    public int getOfficeTotalPoints(String office) throws IOException {
+        List<User> existingUsers = getUsersFromJsonFile();
+    
+        // Calculate the total points for the given office
+        int totalPoints = existingUsers.stream()
+                .filter(user -> user.getOffice().equalsIgnoreCase(office))
+                .mapToInt(User::getCreditPoints)
+                .sum();
+    
+        return totalPoints;
+    }
+    
     
 }

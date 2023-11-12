@@ -59,6 +59,17 @@ public class CreditPointsController {
         }
     }
     
+    @GetMapping("/office/{office}")
+public ResponseEntity<String> getOfficeTotalPoints(@PathVariable String office) {
+    try {
+        int totalPoints = creditPointsService.getOfficeTotalPoints(office);
+        return ResponseEntity.ok("Total points for office " + office + ": " + totalPoints);
+    } catch (IOException e) {
+        e.printStackTrace(); // Log the exception 
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving office total points.");
+    }
+}
+
 }
 
     
