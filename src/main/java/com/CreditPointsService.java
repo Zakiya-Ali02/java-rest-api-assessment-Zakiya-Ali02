@@ -23,10 +23,10 @@ public class CreditPointsService {
         );
     }
 
-    public int calculateCreditPoints(User user) {
+    public int calculateCreditPoints(UserData user) {
         String userActivity = user.getActivity();
 
-        Optional<Activity> activityOptional = findActivityByName(userActivity);
+        Optional<ActivityData> activityOptional = findActivityByName(userActivity);
 
         if (activityOptional.isPresent()) {
             int activityCreditPoints = activityOptional.get().getCreditPoints();
@@ -39,20 +39,20 @@ public class CreditPointsService {
         }
     }
 
-    private Optional<Activity> findActivityByName(String activityName) {
-        List<Activity> activities = creditPointsData.getActivities();
+    private Optional<ActivityData> findActivityByName(String activityName) {
+        List<ActivityData> activities = creditPointsData.getActivities();
         return activities.stream()
                 .filter(activity -> activity.getName().equalsIgnoreCase(activityName))
                 .findFirst();
     }
 
     // Method to save user input to JSON file
-    public void saveUserInput(User user) throws IOException {
+    public void saveUserInput(UserData user) throws IOException {
         int calculatedCreditPoints = calculateCreditPoints(user);
         user.setCreditPoints(calculatedCreditPoints);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        List<User> existingUsers = getUsersFromJsonFile();
+        List<UserData> existingUsers = getUsersFromJsonFile();
         existingUsers.add(user);
         objectMapper.writeValue(new File("src\\main\\resources\\users.json"), existingUsers);
     }
@@ -68,7 +68,7 @@ public class CreditPointsService {
     //     }
     // }
 
-    private List<User> getUsersFromJsonFile() throws IOException {
+    private List<UserData> getUsersFromJsonFile() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File("src/main/resources/users.json");
     
@@ -78,25 +78,25 @@ public class CreditPointsService {
             return new ArrayList<>(); // Return an empty list if the file was just created
         }
     
-        JavaType type = objectMapper.getTypeFactory().constructCollectionType(List.class, User.class);
+        JavaType type = objectMapper.getTypeFactory().constructCollectionType(List.class, UserData.class);
         return objectMapper.readValue(file, type);
     }
 
-    public List<User> getAllUsers() throws IOException {
+    public List<UserData> getAllUsers() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File("src/main/resources/users.json");
         if (file.exists()) {
-            return objectMapper.readValue(file, objectMapper.getTypeFactory().constructCollectionType(List.class, User.class));
+            return objectMapper.readValue(file, objectMapper.getTypeFactory().constructCollectionType(List.class, UserData.class));
         } else {
             return List.of(); // Return an empty list if the file doesn't exist
         }
     }
     
     public String getUserTotalPoints(String userName) throws IOException {
-        List<User> existingUsers = getUsersFromJsonFile();
+        List<UserData> existingUsers = getUsersFromJsonFile();
     
         // Find the user with the given name
-        Optional<User> userOptional = existingUsers.stream()
+        Optional<UserData> userOptional = existingUsers.stream()
                 .filter(user -> user.getName().equalsIgnoreCase(userName))
                 .findFirst();
     
@@ -104,12 +104,12 @@ public class CreditPointsService {
     }
 
     public int getOfficeTotalPoints(String office) throws IOException {
-        List<User> existingUsers = getUsersFromJsonFile();
+        List<UserData> existingUsers = getUsersFromJsonFile();
     
         // Calculate the total points for the given office
         int totalPoints = existingUsers.stream()
                 .filter(user -> user.getOffice().equalsIgnoreCase(office))
-                .mapToInt(User::getCreditPoints)
+                .mapToInt(UserData::getCreditPoints)
                 .sum();
     
         return totalPoints;

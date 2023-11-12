@@ -20,9 +20,9 @@ public class CreditPointsController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserData>> getAllUsers() {
         try {
-            List<User> users = creditPointsService.getAllUsers();
+            List<UserData> users = creditPointsService.getAllUsers();
             return ResponseEntity.ok(users);
         } catch (IOException e) {
             e.printStackTrace(); 
@@ -31,7 +31,7 @@ public class CreditPointsController {
     }
 
     @PostMapping("/calculate")
-    public ResponseEntity<String> calculateCreditPoints(@RequestBody User user) {
+    public ResponseEntity<String> calculateCreditPoints(@RequestBody UserData user) {
         int creditPoints = creditPointsService.calculateCreditPoints(user);
 
         

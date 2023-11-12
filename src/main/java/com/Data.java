@@ -1,14 +1,15 @@
 package com;
 
-public class Activity {
+public class Data {
+
     private String name;
     private int creditPoints;
 
     // Constructors
-    public Activity() {
+    public Data() {
     }
 
-    public Activity(String name, int creditPoints) {
+    public Data(String name, int creditPoints) {
         this.name = name;
         this.creditPoints = creditPoints;
     }
@@ -29,4 +30,5 @@ public class Activity {
     public void setCreditPoints(int creditPoints) {
         this.creditPoints = creditPoints;
     }
+    
 }
