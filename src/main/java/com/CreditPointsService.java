@@ -91,5 +91,16 @@ public class CreditPointsService {
             return List.of(); // Return an empty list if the file doesn't exist
         }
     }
-
+    
+    public String getUserTotalPoints(String userName) throws IOException {
+        List<User> existingUsers = getUsersFromJsonFile();
+    
+        // Find the user with the given name
+        Optional<User> userOptional = existingUsers.stream()
+                .filter(user -> user.getName().equalsIgnoreCase(userName))
+                .findFirst();
+    
+        return userOptional.map(user -> user.getName() + " has " + user.getCreditPoints() + " points in total").orElse("User not found.");
+    }
+    
 }

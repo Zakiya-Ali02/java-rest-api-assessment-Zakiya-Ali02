@@ -48,5 +48,18 @@ public class CreditPointsController {
          return ResponseEntity.ok("Credit Points: " + creditPoints);
     }
 
+    @GetMapping("/user/{name}")
+    public ResponseEntity<String> getUserTotalPoints(@PathVariable String name) {
+        try {
+            String result = creditPointsService.getUserTotalPoints(name);
+            return ResponseEntity.ok(result);
+        } catch (IOException e) {
+            e.printStackTrace(); // Log the exception 
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving user total points.");
+        }
+    }
     
 }
+
+    
+
