@@ -70,6 +70,17 @@ public ResponseEntity<String> getOfficeTotalPoints(@PathVariable String office) 
     }
 }
 
+@GetMapping("/users/sortedByCreditPoints")
+public ResponseEntity<List<UserData>> getAllUsersSortedByCreditPoints() {
+    try {
+        List<UserData> users = creditPointsService.getAllUsersSortedByCreditPoints();
+        return ResponseEntity.ok(users);
+    } catch (IOException e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+}
+
 }
 
     

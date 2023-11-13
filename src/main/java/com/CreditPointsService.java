@@ -1,6 +1,8 @@
 package com;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,11 +59,11 @@ public class CreditPointsService {
         objectMapper.writeValue(new File("src\\main\\resources\\users.json"), existingUsers);
     }
 
-    // private List<User> getUsersFromJsonFile() throws IOException {
+    // private List<UserData> getUsersFromJsonFile() throws IOException {
     //     ObjectMapper objectMapper = new ObjectMapper();
     //     File file = new File("src\\main\\resources\\users.json");
     //     if (file.exists()) {
-    //         JavaType type = objectMapper.getTypeFactory().constructCollectionType(List.class, User.class);
+    //         JavaType type = objectMapper.getTypeFactory().constructCollectionType(List.class, UserData.class);
     //         return objectMapper.readValue(file, type);
     //     } else {
     //         return new ArrayList<>();
@@ -100,7 +102,7 @@ public class CreditPointsService {
                 .filter(user -> user.getName().equalsIgnoreCase(userName))
                 .findFirst();
     
-        return userOptional.map(user -> user.getName() + " has " + user.getCreditPoints() + " points in total").orElse("User not found.");
+        return userOptional.map(user -> user.getName() + " has " + user.getCreditPoints() + " points in total").orElse("UserData not found.");
     }
 
     public int getOfficeTotalPoints(String office) throws IOException {
@@ -113,6 +115,15 @@ public class CreditPointsService {
                 .sum();
     
         return totalPoints;
+    }
+
+        @Autowired
+    private QuickSortAlgo quickSort;
+
+    public List<UserData> getAllUsersSortedByCreditPoints() throws IOException {
+        List<UserData> userList = getUsersFromJsonFile();
+        quickSort.sort(userList, "creditPoints");
+        return userList;
     }
     
     
