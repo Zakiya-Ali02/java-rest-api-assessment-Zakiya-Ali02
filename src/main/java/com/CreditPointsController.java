@@ -81,6 +81,36 @@ public ResponseEntity<List<UserData>> getAllUsersSortedByCreditPoints() {
     }
 }
 
+@DeleteMapping("/user/{name}")
+public ResponseEntity<String> deleteUser(@PathVariable String name) {
+    try {
+        boolean deleted = creditPointsService.deleteUser(name);
+        if (deleted) {
+            return ResponseEntity.ok("UserData " + name + " deleted successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("UserData not found.");
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting user.");
+    }
+}
+
+@PutMapping("/user/{name}")
+public ResponseEntity<String> updateUser(@PathVariable String name, @RequestBody UserData updatedUser) {
+    try {
+        boolean updated = creditPointsService.updateUser(name, updatedUser);
+        if (updated) {
+            return ResponseEntity.ok("UserData " + name + " updated successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("UserData not found.");
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user.");
+    }
+}
+
 }
 
     

@@ -9,6 +9,10 @@ public class CreditPointsData {
     public CreditPointsData() {
     }
 
+    public CreditPointsData(List<ActivityData> activities) {
+        this.activities = activities;
+    }
+
     // Getter and setter
     public List<ActivityData> getActivities() {
         return activities;

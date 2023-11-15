@@ -14,6 +14,7 @@ public class UserData extends Data {
         this.activity = activity;
     }
 
+    // getters and setters
     public String getOffice() {
         return office;
     }

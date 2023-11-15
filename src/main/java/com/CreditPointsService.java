@@ -41,7 +41,7 @@ public class CreditPointsService {
         }
     }
 
-    private Optional<ActivityData> findActivityByName(String activityName) {
+    public Optional<ActivityData> findActivityByName(String activityName) {
         List<ActivityData> activities = creditPointsData.getActivities();
         return activities.stream()
                 .filter(activity -> activity.getName().equalsIgnoreCase(activityName))
@@ -59,18 +59,7 @@ public class CreditPointsService {
         objectMapper.writeValue(new File("src\\main\\resources\\users.json"), existingUsers);
     }
 
-    // private List<UserData> getUsersFromJsonFile() throws IOException {
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     File file = new File("src\\main\\resources\\users.json");
-    //     if (file.exists()) {
-    //         JavaType type = objectMapper.getTypeFactory().constructCollectionType(List.class, UserData.class);
-    //         return objectMapper.readValue(file, type);
-    //     } else {
-    //         return new ArrayList<>();
-    //     }
-    // }
-
-    private List<UserData> getUsersFromJsonFile() throws IOException {
+    public List<UserData> getUsersFromJsonFile() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File("src/main/resources/users.json");
     
@@ -125,6 +114,46 @@ public class CreditPointsService {
         quickSort.sort(userList, "creditPoints");
         return userList;
     }
+
+    private void saveUsersToFile(List<UserData> users) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        File file = new File("src/main/resources/users.json");
+        objectMapper.writeValue(file, users);
+    }
+
+    public boolean deleteUser(String userName) throws IOException {
+        List<UserData> existingUsers = getUsersFromJsonFile();
+        Optional<UserData> userOptional = existingUsers.stream()
+                .filter(user -> user.getName().equalsIgnoreCase(userName))
+                .findFirst();
+
+        if (userOptional.isPresent()) {
+            existingUsers.remove(userOptional.get());
+            saveUsersToFile(existingUsers);
+            return true;
+        } else {
+            return false;
+        }
+    }
     
+
+    public boolean updateUser(String userName, UserData updatedUser) throws IOException {
+        List<UserData> existingUsers = getUsersFromJsonFile();
+        Optional<UserData> userOptional = existingUsers.stream()
+                .filter(user -> user.getName().equalsIgnoreCase(userName))
+                .findFirst();
+
+        if (userOptional.isPresent()) {
+            UserData userToUpdate = userOptional.get();
+            // Update user details
+            userToUpdate.setOffice(updatedUser.getOffice());
+            userToUpdate.setActivity(updatedUser.getActivity());
+            userToUpdate.setCreditPoints(updatedUser.getCreditPoints());
+            saveUsersToFile(existingUsers);
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 }
