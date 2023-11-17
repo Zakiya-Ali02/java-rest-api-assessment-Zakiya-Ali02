@@ -1,3 +1,4 @@
+
 package com.cbfacademy.apiassessment;
 
 import com.App;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -32,8 +34,8 @@ class CreditPointsServiceTest {
     @Test
     void calculateCreditPointsForValidActivity() throws IOException {
         
-        UserData user = new UserData("John Doe", "Office A", "Activity A", 0);
-        ActivityData activity = new ActivityData("Activity A", 10);
+        UserData user = new UserData("John Doe", "Office A", "Activity1", 0);
+        ActivityData activity = new ActivityData("Activity1", 10);
         List<ActivityData> activities = Arrays.asList(activity);
 
         
@@ -41,7 +43,6 @@ class CreditPointsServiceTest {
                 CreditPointsService.class.getResourceAsStream("src\\main\\resources\\credit_points.json"), CreditPointsData.class))
                 .thenReturn(new CreditPointsData(activities));
 
-        
         int result = creditPointsService.calculateCreditPoints(user);
 
         
@@ -65,5 +66,26 @@ class CreditPointsServiceTest {
 
         
         assertEquals(0, result);
+    }
+
+    @Test
+    void calcualteValidTotalPointsForUserReturnsZero() throws IOException {
+        String actual = creditPointsService.getUserTotalPoints("Dan");
+        System.out.println(actual);
+        String expected = "Dan has 10 points in total";
+        assertEquals(expected, actual);
+
+
+    }
+
+    @Test
+    void calcualteInvalidTotalPointsForUserReturnsZero() throws IOException {
+        String actual = creditPointsService.getUserTotalPoints("Dan");
+        System.out.println(actual);
+        String expected = "Dan has 15 points in total";
+        assertNotEquals(expected, actual);
+        
+
+
     }
 }

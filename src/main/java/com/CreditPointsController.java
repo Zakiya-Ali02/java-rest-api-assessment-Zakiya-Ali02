@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 
 import java.io.IOException;
 import java.util.List;
 
+
+
 @RestController
 @RequestMapping("/api/creditpoints")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CreditPointsController {
 
     private final CreditPointsService creditPointsService;
@@ -19,6 +23,8 @@ public class CreditPointsController {
         this.creditPointsService = creditPointsService;
     }
 
+
+    // get all users
     @GetMapping("/users")
     public ResponseEntity<List<UserData>> getAllUsers() {
         try {
@@ -30,6 +36,8 @@ public class CreditPointsController {
         }
     }
 
+    // the input to add a user and calculate and save credit points for a user in JSON file 
+    // @PostMapping(value = {"/calculate"}, consumes = "application/json")
     @PostMapping("/calculate")
     public ResponseEntity<String> calculateCreditPoints(@RequestBody UserData user) {
         int creditPoints = creditPointsService.calculateCreditPoints(user);
@@ -48,6 +56,7 @@ public class CreditPointsController {
          return ResponseEntity.ok("Credit Points: " + creditPoints);
     }
 
+    // get total points for a specific user
     @GetMapping("/user/{name}")
     public ResponseEntity<String> getUserTotalPoints(@PathVariable String name) {
         try {
@@ -59,6 +68,7 @@ public class CreditPointsController {
         }
     }
     
+    // get total points for a specific office
     @GetMapping("/office/{office}")
 public ResponseEntity<String> getOfficeTotalPoints(@PathVariable String office) {
     try {
@@ -70,6 +80,7 @@ public ResponseEntity<String> getOfficeTotalPoints(@PathVariable String office) 
     }
 }
 
+// uses quickSortAlgo to get all users sorted by credit points
 @GetMapping("/users/sortedByCreditPoints")
 public ResponseEntity<List<UserData>> getAllUsersSortedByCreditPoints() {
     try {
@@ -81,6 +92,7 @@ public ResponseEntity<List<UserData>> getAllUsersSortedByCreditPoints() {
     }
 }
 
+// delete a user by name
 @DeleteMapping("/user/{name}")
 public ResponseEntity<String> deleteUser(@PathVariable String name) {
     try {
@@ -96,6 +108,8 @@ public ResponseEntity<String> deleteUser(@PathVariable String name) {
     }
 }
 
+
+// update a user by name
 @PutMapping("/user/{name}")
 public ResponseEntity<String> updateUser(@PathVariable String name, @RequestBody UserData updatedUser) {
     try {
@@ -110,6 +124,7 @@ public ResponseEntity<String> updateUser(@PathVariable String name, @RequestBody
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user.");
     }
 }
+
 
 }
 

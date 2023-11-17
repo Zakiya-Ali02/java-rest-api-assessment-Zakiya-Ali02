@@ -25,6 +25,7 @@ public class CreditPointsService {
         );
     }
 
+// Calculate credit points for a user based on their activity
     public int calculateCreditPoints(UserData user) {
         String userActivity = user.getActivity();
 
@@ -36,11 +37,13 @@ public class CreditPointsService {
             int additionalCreditPoints = 0;
             return activityCreditPoints + additionalCreditPoints;
         } else {
-
+            
+            // returns 0 is activty isnt present
             return 0;
         }
     }
 
+    // Find an activity by its name
     public Optional<ActivityData> findActivityByName(String activityName) {
         List<ActivityData> activities = creditPointsData.getActivities();
         return activities.stream()
@@ -59,6 +62,7 @@ public class CreditPointsService {
         objectMapper.writeValue(new File("src\\main\\resources\\users.json"), existingUsers);
     }
 
+    // Retrieves a list of users from a JSON file
     public List<UserData> getUsersFromJsonFile() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File("src/main/resources/users.json");
@@ -72,7 +76,8 @@ public class CreditPointsService {
         JavaType type = objectMapper.getTypeFactory().constructCollectionType(List.class, UserData.class);
         return objectMapper.readValue(file, type);
     }
-
+    
+    // Gets all users from a JSON file
     public List<UserData> getAllUsers() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File("src/main/resources/users.json");
@@ -83,6 +88,7 @@ public class CreditPointsService {
         }
     }
     
+    // Get the total points for a sepcific user
     public String getUserTotalPoints(String userName) throws IOException {
         List<UserData> existingUsers = getUsersFromJsonFile();
     
@@ -106,7 +112,8 @@ public class CreditPointsService {
         return totalPoints;
     }
 
-        @Autowired
+    // quick sort Algotrithm for sorting users by credit points
+    @Autowired
     private QuickSortAlgo quickSort;
 
     public List<UserData> getAllUsersSortedByCreditPoints() throws IOException {
@@ -115,12 +122,14 @@ public class CreditPointsService {
         return userList;
     }
 
+    // saves users to a JSON file
     private void saveUsersToFile(List<UserData> users) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File("src/main/resources/users.json");
         objectMapper.writeValue(file, users);
     }
-
+ 
+    // delete a user details for a specifc name
     public boolean deleteUser(String userName) throws IOException {
         List<UserData> existingUsers = getUsersFromJsonFile();
         Optional<UserData> userOptional = existingUsers.stream()
@@ -136,7 +145,7 @@ public class CreditPointsService {
         }
     }
     
-
+    // update user details for a specific name
     public boolean updateUser(String userName, UserData updatedUser) throws IOException {
         List<UserData> existingUsers = getUsersFromJsonFile();
         Optional<UserData> userOptional = existingUsers.stream()
