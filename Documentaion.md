@@ -7,6 +7,7 @@ This application provides a credit points calculation system for users based on 
 ## Table of Contents
 
 - [Installation](#installation)
+- [Running the test](#runtest)
 - [Running the app](#runningtheapp)
 - [Endpoints](#endpoints)
 - [Data Structure](#data-structure)
@@ -34,6 +35,11 @@ This application provides a credit points calculation system for users based on 
 
     ```bash
    mvnw clean dependency:resolve
+   ```
+## Running the tests
+**To start running the test runt the following command in the termial:**
+   ```sh
+   mvn clean install
    ```
 
 ## Running the app
