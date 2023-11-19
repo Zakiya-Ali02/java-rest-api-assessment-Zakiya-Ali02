@@ -3,6 +3,7 @@ package com;
 public class UserData extends Data {
     private String office;
     private String activity;
+    private String activityCategory;
 
     // Constructors
     public UserData() {
@@ -29,5 +30,13 @@ public class UserData extends Data {
 
     public void setActivity(String activity) {
         this.activity = activity;
+    }
+
+    public String getActivityCategory() {
+        return activityCategory;
+    }
+
+    public void setActivityCategory(String activityCategory) {
+        this.activityCategory = activityCategory;
     }
 }

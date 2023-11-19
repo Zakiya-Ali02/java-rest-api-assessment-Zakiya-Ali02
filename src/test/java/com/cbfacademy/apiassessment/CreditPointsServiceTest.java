@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
@@ -19,10 +18,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,14 +49,16 @@ class CreditPointsServiceTest {
         }
     }
 
+    // mocks object mapper
     @MockBean
     private ObjectMapper objectMapper;
 
+    // this test is cheching weeather the calculateCreditPoints method correctly calculates and returns the credit points for a given usesr based on the provided Activitydata list
     @Test
     void calculateCreditPointsForValidActivity() throws IOException {
         
-        UserData user = new UserData("John Doe", "Office A", "Activity1", 0);
-        ActivityData activity = new ActivityData("Activity1", 10);
+        UserData user = new UserData("John Doe", "Office A", "Walked to work", 0);
+        ActivityData activity = new ActivityData("Walked to work", 15, "Climate action");
         List<ActivityData> activities = Arrays.asList(activity);
 
         
@@ -68,14 +69,15 @@ class CreditPointsServiceTest {
         int result = creditPointsService.calculateCreditPoints(user);
 
         
-        assertEquals(10, result);
+        assertEquals(15, result);
     }
 
+    // this test calcaltes the credit points for an invalid activity and expects to return 0
     @Test
     void calculateCreditPointsForInvalidActivityReturnsZero() throws IOException {
         
         UserData user = new UserData("John Doe", "Office A", "Unknown Activity", 0);
-        ActivityData activity = new ActivityData("Activity A", 10);
+        ActivityData activity = new ActivityData("Walked to work", 15, "Climate action");
         List<ActivityData> activities = Arrays.asList(activity);
 
         
@@ -90,27 +92,7 @@ class CreditPointsServiceTest {
         assertEquals(0, result);
     }
 
-    @Test
-    void calcualteValidTotalPointsForUserReturnsZero() throws IOException {
-        String actual = creditPointsService.getUserTotalPoints("Dan");
-        System.out.println(actual);
-        String expected = "Dan has 10 points in total";
-        assertEquals(expected, actual);
-
-
-    }
-
-    @Test
-    void calcualteInvalidTotalPointsForUserReturnsZero() throws IOException {
-        String actual = creditPointsService.getUserTotalPoints("Dan");
-        System.out.println(actual);
-        String expected = "Dan has 15 points in total";
-        assertNotEquals(expected, actual);
-        
-
-
-    }
-
+    // this tests wether the saveUserInput method correctly saves user input, using a mocked CreditPointsService
     @Test
     public void testSaveUserInput() {
         UserData user = new UserData("John Doe", "Office1", "Activity1", 0);
@@ -121,6 +103,7 @@ class CreditPointsServiceTest {
         assertDoesNotThrow(() -> mockedCreditPointsService.saveUserInput(user));
     }
 
+    // this test the getAllUsersFromJsonFile method
         @Test
     public void testGetUsersFromJsonFile() {
         assertDoesNotThrow(() -> {
@@ -129,16 +112,18 @@ class CreditPointsServiceTest {
         });
     }
 
+    // Test for getting total points for a specific user
     @Test
     public void testGetUserTotalPoints() {
         String userName = "John Doe";
 
         assertDoesNotThrow(() -> {
-            String result = creditPointsService.getUserTotalPoints(userName);
+            int result = creditPointsService.getUserTotalPoints(userName);
             assertNotNull(result);
         });
     }
 
+    // Test for getting total points for a specific office
     @Test
     public void testGetOfficeTotalPoints() {
         String office = "Office1";
@@ -149,20 +134,22 @@ class CreditPointsServiceTest {
         });
     }
 
-@Test
-public void testDeleteUser() throws IOException {
-    String userName = "John Doe";
+    // this is a test for deleting a user using a mocked CreditPointsService
+    @Test
+    public void testDeleteUser() throws IOException {
+        String userName = "John Doe";
 
-    // Mock the getUsersFromJsonFile method using the mock object
-    List<UserData> existingUsers = new ArrayList<>(Arrays.asList(new UserData("John Doe", "Office1", "Activity1", 10)));
-    when(mockedCreditPointsService.getUsersFromJsonFile()).thenReturn(existingUsers);
+        // Mock the getUsersFromJsonFile method using the mock object
+        List<UserData> existingUsers = new ArrayList<>(Arrays.asList(new UserData("John Doe", "Office1", "Activity1", 10)));
+        when(mockedCreditPointsService.getUsersFromJsonFile()).thenReturn(existingUsers);
 
-    // Mock the deleteUser method using the mock object
-    when(mockedCreditPointsService.deleteUser(userName)).thenCallRealMethod();
+        // Mock the deleteUser method using the mock object
+        when(mockedCreditPointsService.deleteUser(userName)).thenCallRealMethod();
 
-    assertTrue(mockedCreditPointsService.deleteUser(userName));
-}
+        assertTrue(mockedCreditPointsService.deleteUser(userName));
+    }
 
+    // this is a test for updating a user using a mocked CreditPointsService
     @Test
     public void testUpdateUser() throws IOException {
         String userName = "John Doe";
@@ -181,6 +168,36 @@ public void testDeleteUser() throws IOException {
         verify(mockedCreditPointsService, times(1)).saveUsersToFile(anyList());
     }
 
+    // // test to if GetActivityCategoryTotalPoints method works corretly 
+    // @Test
+    // public void testGetActivityCategoryTotalPoints() throws IOException {
 
+    //     // Create a test users
+    //     UserData user1 = new UserData("John", "OfficeA", "ActivityA", 10);
+    //     user1.setActivityCategory("CategoryA");
+
+    //     // Save the test users to the JSON file
+    //     creditPointsService.saveUsersToFile(List.of(user1));
+
+    //     int totalPointsForCategoryA = creditPointsService.getActivityCategoryTotalPoints("CategoryA");
+
+    //     assertEquals(10, totalPointsForCategoryA, "Total points for CategoryA should be 10");
+
+    //     // //Delete the test users from the JSON file
+    //     // deleteTestUsers();
+    // }
+
+    // // method to delete the test users from the JSON file
+    // private void deleteTestUsers() {
+    //     try {
+    //         File file = new File("src/main/resources/users.json");
+    //         ObjectMapper objectMapper = new ObjectMapper();
+    //         List<UserData> existingUsers = objectMapper.readValue(file, objectMapper.getTypeFactory().constructCollectionType(List.class, UserData.class));
+    //         existingUsers.removeIf(user -> user.getName().equals("John"));
+    //         objectMapper.writeValue(file, existingUsers);
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
 }

@@ -61,6 +61,7 @@ This application provides a credit points calculation system for users based on 
 - **DELETE /api/creditpoints/user/{name}:** Delete a user by name.
 - **PUT /api/creditpoints/user/{name}:** Update a user by name.
 - **GET /api/creditpoints/users/sorted:** Get all users sorted by credit points.
+- **GET /api/creditpoints/activityCategory/{category}** Get total points per activty category
 
 This API requires the uses of API testing tools such as postman to handle the post, update and delete requests.
 
@@ -72,8 +73,7 @@ This API requires the uses of API testing tools such as postman to handle the po
 {
   "name": "John Doe",
   "office": "Office A",
-  "activity": "Cycling",
-  "creditPoints": 50
+  "activity": "Cycling"
 }
 
 ```
@@ -81,11 +81,26 @@ This API requires the uses of API testing tools such as postman to handle the po
 
 Credit points: 10
 
-3. **The output for a post request will look like this**
+3. **The output for a get request at this end point; http://localhost:8080/api/creditpoints/users will look similar to this**
+```json
+[
+    {
+        "name": "John Doe",
+        "creditPoints": 15,
+        "office": "Office A",
+        "activity": "Walked to work",
+        "activityCategory": "Climate action"
+    },
+    {
+        "name": "Bob Johnson",
+        "creditPoints": 10,
+        "office": "Office B",
+        "activity": "Cycled to work",
+        "activityCategory": "Climate action"
+    }
+]
 
-4. **The output for a post request will look like this**
-
-5. **The output for a post request will look like this**
+```
 
 ## Frontend
 

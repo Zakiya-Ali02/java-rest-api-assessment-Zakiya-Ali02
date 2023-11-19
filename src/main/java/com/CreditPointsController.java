@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,6 +12,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/creditpoints")
+
+//CORS configuration for frontend
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CreditPointsController {
 
@@ -24,7 +25,7 @@ public class CreditPointsController {
     }
 
 
-    // get all users
+    // gets all user data from the JSON file
     @GetMapping("/users")
     public ResponseEntity<List<UserData>> getAllUsers() {
         try {
@@ -36,14 +37,13 @@ public class CreditPointsController {
         }
     }
 
-    // the input to add a user and calculate and save credit points for a user in JSON file 
-    // @PostMapping(value = {"/calculate"}, consumes = "application/json")
+    // the input to add a user and calculate and save credit points for the user in JSON file 
     @PostMapping("/calculate")
     public ResponseEntity<String> calculateCreditPoints(@RequestBody UserData user) {
         int creditPoints = creditPointsService.calculateCreditPoints(user);
 
-        
-       
+        // Retrieve the activity category from the UserData
+        String activityCategory = user.getActivityCategory();
 
         try {
             creditPointsService.saveUserInput(user);
@@ -60,8 +60,8 @@ public class CreditPointsController {
     @GetMapping("/user/{name}")
     public ResponseEntity<String> getUserTotalPoints(@PathVariable String name) {
         try {
-            String result = creditPointsService.getUserTotalPoints(name);
-            return ResponseEntity.ok(result);
+            int userTotalPoints = creditPointsService.getUserTotalPoints(name);
+            return ResponseEntity.ok("Total points for " + name + ": " + userTotalPoints);
         } catch (IOException e) {
             e.printStackTrace(); // Log the exception 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving user total points.");
@@ -124,6 +124,18 @@ public ResponseEntity<String> updateUser(@PathVariable String name, @RequestBody
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user.");
     }
 }
+
+    // Get total points for a specific activity category
+    @GetMapping("/activityCategory/{category}")
+    public ResponseEntity<String> getActivityCategoryTotalPoints(@PathVariable String category) {
+        try {
+            int totalPoints = creditPointsService.getActivityCategoryTotalPoints(category);
+            return ResponseEntity.ok("Total points for activity category " + category + ": " + totalPoints);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving activity category total points.");
+        }
+    }
 
 
 }

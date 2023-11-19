@@ -25,23 +25,6 @@ public class CreditPointsService {
         );
     }
 
-// Calculate credit points for a user based on their activity
-    public int calculateCreditPoints(UserData user) {
-        String userActivity = user.getActivity();
-
-        Optional<ActivityData> activityOptional = findActivityByName(userActivity);
-
-        if (activityOptional.isPresent()) {
-            int activityCreditPoints = activityOptional.get().getCreditPoints();
-
-            int additionalCreditPoints = 0;
-            return activityCreditPoints + additionalCreditPoints;
-        } else {
-            
-            // returns 0 is activty isnt present
-            return 0;
-        }
-    }
 
     // Find an activity by its name
     public Optional<ActivityData> findActivityByName(String activityName) {
@@ -51,16 +34,48 @@ public class CreditPointsService {
                 .findFirst();
     }
 
-    // Method to save user input to JSON file
+
+    // method to calculate credit points for a user based on their activity
+    public int calculateCreditPoints(UserData user) {
+        String userActivity = user.getActivity();
+
+        Optional<ActivityData> activityOptional = findActivityByName(userActivity);
+
+        // if the activity is present, calculate and return the total credit points
+        if (activityOptional.isPresent()) {
+            ActivityData activityData = activityOptional.get();
+            int activityCreditPoints = activityData.getCreditPoints();
+            int additionalCreditPoints = 0;
+
+            // Set the activity category in the UserData
+            user.setActivityCategory(activityData.getCategory());
+
+            return activityCreditPoints + additionalCreditPoints;
+        } else {
+            // returns 0 if activity isn't present
+            return 0;
+        }
+    }
+
+
+
+
+        // Method to save user input to JSON file
     public void saveUserInput(UserData user) throws IOException {
         int calculatedCreditPoints = calculateCreditPoints(user);
         user.setCreditPoints(calculatedCreditPoints);
 
+        // Adds the category to the user's activity
+        Optional<ActivityData> activityOptional = findActivityByName(user.getActivity());
+        activityOptional.ifPresent(activityData -> user.setActivityCategory(activityData.getCategory()));
+
+        // SAVES USER TO JSON FILE
         ObjectMapper objectMapper = new ObjectMapper();
         List<UserData> existingUsers = getUsersFromJsonFile();
         existingUsers.add(user);
         objectMapper.writeValue(new File("src\\main\\resources\\users.json"), existingUsers);
     }
+
 
     // Retrieves a list of users from a JSON file
     public List<UserData> getUsersFromJsonFile() throws IOException {
@@ -89,17 +104,20 @@ public class CreditPointsService {
     }
     
     // Get the total points for a sepcific user
-    public String getUserTotalPoints(String userName) throws IOException {
+    public int getUserTotalPoints(String userName) throws IOException {
         List<UserData> existingUsers = getUsersFromJsonFile();
     
         // Find the user with the given name
-        Optional<UserData> userOptional = existingUsers.stream()
+        int userTotalPoints = existingUsers.stream()
                 .filter(user -> user.getName().equalsIgnoreCase(userName))
-                .findFirst();
-    
-        return userOptional.map(user -> user.getName() + " has " + user.getCreditPoints() + " points in total").orElse("UserData not found.");
-    }
+                .mapToInt(UserData::getCreditPoints)
+                .sum();
 
+    
+        return userTotalPoints;
+    }
+    
+    // method to get the total points for a sepcific offcie
     public int getOfficeTotalPoints(String office) throws IOException {
         List<UserData> existingUsers = getUsersFromJsonFile();
     
@@ -163,6 +181,19 @@ public class CreditPointsService {
         } else {
             return false;
         }
+    }
+
+        // Get total points for a specific activity category
+    public int getActivityCategoryTotalPoints(String category) throws IOException {
+        List<UserData> existingUsers = getUsersFromJsonFile();
+
+        // Calculate the total points for the given activity category
+        int totalPoints = existingUsers.stream()
+                .filter(user -> category.equalsIgnoreCase(user.getActivityCategory()))
+                .mapToInt(UserData::getCreditPoints)
+                .sum();
+
+        return totalPoints;
     }
     
 }

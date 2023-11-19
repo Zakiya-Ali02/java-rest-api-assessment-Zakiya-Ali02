@@ -1,21 +1,53 @@
 {
     "activities": [
       {
-        "name": "Activity1",
-        "creditPoints": 10
+        "name": "Walked to work",
+        "creditPoints": 15,
+        "category":"Climate action"
+
+        
       },
       {
-        "name": "Activity2",
-        "creditPoints": 15
+        "name": "Cycled to work",
+        "creditPoints": 10,
+        "category":"Climate action"
       },
       {
-        "name": "Activity3",
-        "creditPoints": 20
+        "name": "Recycled",
+        "creditPoints": 5,
+        "category":"Climate action"
       },
       {
-        "name": "Activity4",
-        "creditPoints": 8
+        "name": "Mentoring",
+        "creditPoints": 15,
+        "category":"Charity"
+      },
+      {
+        "name": "Fundraisng",
+        "creditPoints": 20,
+        "category":"Charity"
+      },
+      {
+        "name": "Volunteering",
+        "creditPoints": 8,
+        "category":"Charity"
+      },
+      {
+        "name": "Donating",
+        "creditPoints": 3,
+        "category":"Charity"
+      },
+      {
+        "name": "Exercise",
+        "creditPoints": 3,
+        "category":"Health and wellbeing"
+      },
+      {
+        "name": "Balanced diet",
+        "creditPoints": 5,
+        "category":"Health and wellbeing"
       }
+
     ]
   }
   

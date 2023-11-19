@@ -5,29 +5,15 @@
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Credit Points App</title>
-     <style>
-         body {
-             font-family: Arial, sans-serif;
-             margin: 20px;
-         }
-         form {
-             display: flex;
-             flex-direction: column;
-             max-width: 400px;
-             margin-bottom: 20px;
-         }
-         input, select, button {
-             margin-bottom: 10px;
-             padding: 8px;
-             font-size: 16px;
-         }
-     </style>
+     <link rel="stylesheet" type="text/css" href="styles.css">
  </head>
  <body>
      <h1>Credit Points App</h1>
  
      <!-- Form to calculate credit points -->
      <form id="calculateForm">
+
+        
          <label for="name">Name:</label>
          <input type="text" id="name" required>
  
@@ -36,7 +22,9 @@
  
          <label for="activity">Activity:</label>
          <select id="activity" required>
-             <!-- Add options dynamically using JavaScript -->
+             <option value="" disabled selected>Select an activity</option>
+             <!-- The options will be populated using JavaScript -->
+             
          </select>
  
          <button type="button" onclick="calculateCreditPoints()">Calculate Credit Points</button>
@@ -47,6 +35,7 @@
  
      <!-- Form to get user by name -->
      <form id="getUserForm">
+        <h2>Calcualte Total Points For User</h2>
          <label for="userName">User Name:</label>
          <input type="text" id="userName" required>
  
@@ -58,6 +47,7 @@
  
      <!-- Form to get office total points -->
      <form id="getOfficeForm">
+        <h2>Calcualte Total Points For Office</h2>
          <label for="officeName">Office Name:</label>
          <input type="text" id="officeName" required>
  
@@ -67,81 +57,23 @@
      <!-- Display office total points -->
      <div id="officeTotalPoints"></div>
 
-    <!-- JavaScript to interact with the backend -->
-    <script>
+         <!-- Form to get total points for activity category -->
+         <form id="getActivityCategoryForm">
+            <h2>Calcualte Total Points For Category</h2>
+            <label for="activityCategory">Activity Category:</label>
+            <select id="activityCategory" required>
+                <option value="" disabled selected>Select an activity category</option>
+                <!-- The options will be populated using JavaScript -->
+            </select>
+    
+            <button type="button" onclick="getActivityCategoryTotalPoints()">Get Activity Category Total Points</button>
+        </form>
 
-        // Sample array of activities (replace with actual activities from your backend)
-        const activities = ['Activity1', 'Activity2', 'Activity3'];
+    <!-- Display activity category total points -->
+    <div id="activityCategoryTotalPoints"></div>
 
-        // Populate the dropdown menu with activities
-        const activityDropdown = document.getElementById('activity');
-        activities.forEach(activity => {
-            const option = document.createElement('option');
-            option.value = activity;
-            option.text = activity;
-            activityDropdown.add(option);
-        });
-
-
-
-
-        function calculateCreditPoints() {
-            const name = document.getElementById('name').value;
-            const office = document.getElementById('office').value;
-            const activity = document.getElementById('activity').value;
-
-            const user = {
-                name: name,
-                office: office,
-                activity: activity,
-                creditPoints: 0 // The backend will calculate this
-            };
-
-            fetch('http://localhost:8080/api/creditpoints/calculate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(user)
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('result').innerText = data;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('result').innerText = 'Error calculating credit points.';
-            });
-        }
-
-        function getUserByName() {
-            const userName = document.getElementById('userName').value;
-
-            fetch(`http://localhost:8080/api/creditpoints/user/${userName}`)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('userData').innerText = JSON.stringify(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('userData').innerText = 'Error getting user data.';
-                });
-        }
-        
-        function getOfficeTotalPoints() {
-            const officeName = document.getElementById('officeName').value;
-
-            fetch(`http://localhost:8080/api/creditpoints/office/${officeName}`)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('officeTotalPoints').innerText = data;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('officeTotalPoints').innerText = 'Error getting office total points.';
-                });
-        }
-    </script>
+        <!-- JavaScript to interact with the backend -->
+        <script src="script.js"></script>
 </body>
 </html>
 
