@@ -1,0 +1,79 @@
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Credit Points App</title>
+     <link rel="stylesheet" type="text/css" href="styles.css">
+ </head>
+ <body>
+     <h1>Credit Points App</h1>
+ 
+     <!-- Form to calculate credit points -->
+     <form id="calculateForm">
+
+        
+         <label for="name">Name:</label>
+         <input type="text" id="name" required>
+ 
+         <label for="office">Office:</label>
+         <input type="text" id="office" required>
+ 
+         <label for="activity">Activity:</label>
+         <select id="activity" required>
+             <option value="" disabled selected>Select an activity</option>
+             <!-- The options will be populated using JavaScript -->
+             
+         </select>
+ 
+         <button type="button" onclick="calculateCreditPoints()">Calculate Credit Points</button>
+     </form>
+ 
+     <!-- Display result -->
+     <div id="result"></div>
+ 
+     <!-- Form to get user by name -->
+     <form id="getUserForm">
+        <h2>Calcualte Total Points For User</h2>
+         <label for="userName">User Name:</label>
+         <input type="text" id="userName" required>
+ 
+         <button type="button" onclick="getUserByName()">Get User by Name</button>
+     </form>
+ 
+     <!-- Display user data -->
+     <div id="userData"></div>
+ 
+     <!-- Form to get office total points -->
+     <form id="getOfficeForm">
+        <h2>Calcualte Total Points For Office</h2>
+         <label for="officeName">Office Name:</label>
+         <input type="text" id="officeName" required>
+ 
+         <button type="button" onclick="getOfficeTotalPoints()">Get Office Total Points</button>
+     </form>
+ 
+     <!-- Display office total points -->
+     <div id="officeTotalPoints"></div>
+
+         <!-- Form to get total points for activity category -->
+         <form id="getActivityCategoryForm">
+            <h2>Calcualte Total Points For Category</h2>
+            <label for="activityCategory">Activity Category:</label>
+            <select id="activityCategory" required>
+                <option value="" disabled selected>Select an activity category</option>
+                <!-- The options will be populated using JavaScript -->
+            </select>
+    
+            <button type="button" onclick="getActivityCategoryTotalPoints()">Get Activity Category Total Points</button>
+        </form>
+
+    <!-- Display activity category total points -->
+    <div id="activityCategoryTotalPoints"></div>
+
+        <!-- JavaScript to interact with the backend -->
+        <script src="script.js"></script>
+</body>
+</html>
+
