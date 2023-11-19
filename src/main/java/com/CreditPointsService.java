@@ -114,7 +114,7 @@ public class CreditPointsService {
 
     // quick sort Algotrithm for sorting users by credit points
     @Autowired
-    private QuickSortAlgo quickSort;
+    public QuickSortAlgo quickSort;
 
     public List<UserData> getAllUsersSortedByCreditPoints() throws IOException {
         List<UserData> userList = getUsersFromJsonFile();
@@ -123,7 +123,7 @@ public class CreditPointsService {
     }
 
     // saves users to a JSON file
-    private void saveUsersToFile(List<UserData> users) throws IOException {
+    public void saveUsersToFile(List<UserData> users) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File("src/main/resources/users.json");
         objectMapper.writeValue(file, users);
